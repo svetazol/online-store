@@ -1,3 +1,5 @@
+import os
+
 import aiohttp_jinja2
 import jinja2
 from aiohttp import web
@@ -17,4 +19,5 @@ async def init_app():
 
 if __name__ == '__main__':
     app = init_app()
-    web.run_app(app, )
+    port = int(os.environ.get('PORT', 8000))
+    web.run_app(app, port=port)

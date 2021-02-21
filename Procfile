@@ -1,1 +1,1 @@
-web: cd src && python backend/app.py
+web: export PYTHONPATH=/app/src && python src/backend/app.py
