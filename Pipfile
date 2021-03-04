@@ -7,6 +7,12 @@ name = "pypi"
 aiohttp = "*"
 jinja2 = "*"
 aiohttp-jinja2 = "*"
+aiohttp-security = "*"
+sqlalchemy = "==1.4.0b3"
+asyncpg = "*"
+passlib = "*"
+fernet = "*"
+aiohttp-session = {extras = ["secure"], version = "*"}
 
 [dev-packages]
 
