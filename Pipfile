@@ -13,6 +13,8 @@ asyncpg = "*"
 passlib = "*"
 fernet = "*"
 aiohttp-session = {extras = ["secure"], version = "*"}
+alembic = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
