@@ -24,7 +24,7 @@ class LoginView(web.View):
         if await User.check_credentials(self.request.app.async_session, login,
                                         password):
             await remember(self.request, response, login)
-            raise response
+            return response
 
         raise web.HTTPUnauthorized(
             body=b'Invalid username/password combination')
