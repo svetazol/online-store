@@ -10,8 +10,9 @@ class DBAuthorizationPolicy(AbstractAuthorizationPolicy):
 
     async def authorized_userid(self, identity):
         async with self.async_session() as session:
-            user = await session.execute(
-                select(User).filter_by(login=identity).first())
+            result = await session.execute(
+                select(User).filter_by(login=identity))
+            user = result.scalars().first()
 
             # commit would normally expire all attributes
             await session.commit()

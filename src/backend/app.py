@@ -13,20 +13,23 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 from backend import settings
 from backend.auth.policy import DBAuthorizationPolicy
 from backend.db import init_db
+from backend.middlewares import error_middleware
 from backend.routers import setup_routes
-from backend.settings import DATABASE_URL
+from backend.settings import DEBUG, STATIC_DIR, STATIC_URL, DATABASE_URL
 
 
-async def init_app():
-    app = web.Application()
+async def init_app() -> web.Application:
+    app = web.Application(middlewares=[error_middleware])
+    app.settings = settings
     env = aiohttp_jinja2.setup(
         app,
         loader=jinja2.PackageLoader('backend', 'templates')
     )
     env.globals['settings'] = settings
     setup_routes(app)
-    async_session = await init_db(DATABASE_URL)
+    async_session, db_engine = await init_db(DATABASE_URL)
     app.async_session = async_session
+    app.db_engine = db_engine
     setup_security(app,
                    SessionIdentityPolicy(),
                    DBAuthorizationPolicy(async_session))
@@ -35,16 +38,13 @@ async def init_app():
     secret_key = base64.urlsafe_b64decode(fernet_key)
     setup_session(app, EncryptedCookieStorage(secret_key))
 
-    if settings.DEBUG:
-        parsed = urlparse(settings.STATIC_URL)
-        settings.STATIC_URL = parsed.path
-        app.router.add_static(settings.STATIC_URL, settings.STATIC_DIR,
-                              name='static')
+    if DEBUG:
+        parsed_static_url = urlparse(STATIC_URL)
+        app.router.add_static(parsed_static_url.path, STATIC_DIR, name='static')
 
     return app
 
 
 if __name__ == '__main__':
     app = init_app()
-    port = int(os.environ.get('PORT', 8082))
-    web.run_app(app, port=port)
+    web.run_app(app, port=settings.PROJECT_PORT)

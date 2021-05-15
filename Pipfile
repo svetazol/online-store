@@ -8,15 +8,18 @@ aiohttp = "*"
 jinja2 = "*"
 aiohttp-jinja2 = "*"
 aiohttp-security = "*"
-sqlalchemy = "==1.4.0b3"
+sqlalchemy = "*"
 asyncpg = "*"
 passlib = "*"
 fernet = "*"
 aiohttp-session = {extras = ["secure"], version = "*"}
 alembic = "*"
 psycopg2-binary = "*"
+pytest-aiohttp = "*"
+pyyaml = "*"
 
 [dev-packages]
+python-dotenv = "*"
 
 [requires]
 python_version = "3.9"

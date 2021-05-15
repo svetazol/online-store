@@ -14,4 +14,4 @@ async def init_db(database_url):
         engine, expire_on_commit=False, class_=AsyncSession
     )
 
-    return async_session
+    return async_session, engine
