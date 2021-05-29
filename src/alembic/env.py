@@ -1,6 +1,7 @@
 import os
 from logging.config import fileConfig
 
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
@@ -12,8 +13,9 @@ config = context.config
 
 # here we allow ourselves to pass interpolation vars to alembic.ini
 # fron the host env
+load_dotenv()
 section = config.config_ini_section
-for var in ("DB_PORT", "DB_NAME", "DB_USER", "DB_PASSWORD"):
+for var in ("OS_DATABASE_HOST", "OS_DATABASE_PORT", "OS_DATABASE_NAME", "OS_DATABASE_USER", "OS_DATABASE_PASSWORD"):
     config.set_section_option(section, var, os.environ.get(var))
 
 

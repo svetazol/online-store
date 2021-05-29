@@ -17,6 +17,7 @@ alembic = "*"
 psycopg2-binary = "*"
 pytest-aiohttp = "*"
 pyyaml = "*"
+aiohttp-swagger = {editable = true, ref = "master", git = "https://github.com/cr0hn/aiohttp-swagger"}
 
 [dev-packages]
 python-dotenv = "*"

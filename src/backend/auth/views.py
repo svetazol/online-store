@@ -9,6 +9,31 @@ from backend.auth.models import User
 
 class SignupView(web.View):
     async def post(self):
+        """
+        ---
+        summary: Signup form.
+        description: New user registration.
+        requestBody:
+            required: true
+            content:
+                application/x-www-form-urlencoded:
+                    schema:
+                        type: object
+                        properties:
+                            login:
+                                type: string
+                            password:
+                                type: string
+                            confirmed_password:
+                                type: string
+                        required:
+                            - login
+                            - password
+                            - confirmed_password
+        responses:
+            '200':
+                description: OK
+        """
         form = await self.request.post()
         login = form.get("login")
         password = form.get("password")
@@ -22,6 +47,28 @@ class SignupView(web.View):
 
 class LoginView(web.View):
     async def post(self):
+        """
+        ---
+        summary: Login form.
+        description: Current user login.
+        requestBody:
+            required: true
+            content:
+                application/x-www-form-urlencoded:
+                    schema:
+                        type: object
+                        properties:
+                            login:
+                                type: string
+                            password:
+                                type: string
+                        required:
+                            - login
+                            - password
+        responses:
+            '200':
+                description: OK
+        """
         response = web.HTTPFound("/")
         form = await self.request.post()
         login = form.get("login")
@@ -37,6 +84,14 @@ class LoginView(web.View):
 
 class LogoutView(web.View):
     async def get(self):
+        """
+        ---
+        summary: Logout.
+        description: Current user logout.
+        responses:
+            '200':
+                description: OK
+        """
         await check_authorized(self.request)
         response = web.Response(body="You have been logged out")
         await forget(self.request, response)

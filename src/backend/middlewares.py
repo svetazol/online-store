@@ -1,5 +1,8 @@
+import logging
+
 from aiohttp import web
 
+logger = logging.getLogger(__name__)
 
 @web.middleware
 async def error_middleware(request, handler):
@@ -10,6 +13,7 @@ async def error_middleware(request, handler):
             {"status": "error", "reason": ex.reason}, status=ex.status
         )
     except Exception as ex:
+        logger.exception(ex)
         return web.json_response(
             {"status": "failed", "reason": str(ex)}, status=500
         )

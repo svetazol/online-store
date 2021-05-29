@@ -9,6 +9,7 @@ from aiohttp import web
 from aiohttp_security import SessionIdentityPolicy, setup as setup_security
 from aiohttp_session import setup as setup_session
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
+from aiohttp_swagger import setup_swagger
 
 from backend import settings
 from backend.auth.policy import DBAuthorizationPolicy
@@ -27,6 +28,7 @@ async def init_app() -> web.Application:
     )
     env.globals['settings'] = settings
     setup_routes(app)
+    setup_swagger(app, ui_version=3)
     async_session, db_engine = await init_db(DATABASE_URL)
     app.async_session = async_session
     app.db_engine = db_engine
